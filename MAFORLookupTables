@@ -1,0 +1,104 @@
+import sys
+
+print("Paste your MAFOR code here, then type END on a new line and press Enter when done:")
+
+lines = []
+while True:
+    try:
+        line = input()
+        if line.strip().upper() == "END":
+            break
+        lines.append(line)
+    except EOFError:
+        break
+
+x = "\n".join(lines)
+
+lists = x.split("\n")
+
+Code_1 = {
+    "0": "Beginning of Period",
+    "1": int(300),
+    "2": int(600),
+    "3": int(900),
+    "4": int(1200),
+    "5": int(1800),
+    "6": int(2400),
+    "7": int(4800),
+    "8": int(7200),
+    "9": "Occasionally"
+}
+
+Code_2 = {
+    "0": "Calm",
+    "1": "Northeast",
+    "2": "East",
+    "3": "Southeast",
+    "4": "South",
+    "5": "Southwest",
+    "6": "West",
+    "7": "Northwest",
+    "8": "North",
+    "9": "Variable"
+}
+
+Code_3 = {
+    "0": "0 - 10 Knots",
+    "1": "11 - 16 Knots",
+    "2": "17 - 21 Knots",
+    "3": "22 - 27 Knots",
+    "4": "28 - 33 Knots",
+    "5": "34 - 40 Knots",
+    "6": "41 - 47 Knots",
+    "7": "48 - 55 Knots",
+    "8": "56 - 63 Knots",
+    "9": "64 + Knots"
+}
+
+Code_4 = {
+    "0": "Visibility greater than 3 nm",
+    "1": "Risk of accumulation of ice on superstructures",
+    "2": "Strong risk of accumulation of ice on superstructure",
+    "3": "Visibility >= 1 nm and <= 3 nm",
+    "4": "Visibility < 1 nm, including fog",
+    "5": "Drizzle",
+    "6": "Rain",
+    "7": "Snow, or rain and snow",
+    "8": "Squally weather with or without showers",
+    "9": "Thunderstorms"
+}
+num_lists = 4
+f = -1
+for list in lists:
+    f = f + 1
+    e = 0
+    num_lists = 4 + 2 * f
+    if len(lists) > num_lists:
+        count_1 = lists[num_lists].count(" ") + 1
+        print(lists[(num_lists - 1)])
+        print("\n")
+        Initial_Time = int(lists[0][14:18])
+    else:
+        break
+    for i in range(count_1):
+        Pos_1 = 1 + 6 * e
+        Pos_2 = 2 + 6 * e
+        Pos_3 = 3 + 6 * e
+        Pos_4 = 4 + 6 * e
+        if int(lists[num_lists][Pos_1]) == 9:
+            print("Occasionally")
+        else:
+            New_Time = Initial_Time + int(Code_1[lists[num_lists][(Pos_1)]])
+            if New_Time > 2400:
+                New_Time = New_Time - 2400
+                print(str(Initial_Time).zfill(4) + " - " + str(New_Time).zfill(4))
+            else:
+                print(str(Initial_Time).zfill(4) + " - " + str(New_Time).zfill(4))
+        Initial_Time = New_Time
+        print(Code_2[lists[num_lists][(Pos_2)]])
+        print(Code_3[lists[num_lists][(Pos_3)]])
+        print(Code_4[lists[num_lists][(Pos_4)]])
+        print("\n")
+        e = e + 1
+
+input("Press Enter to exit...")
